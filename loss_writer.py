@@ -157,8 +157,8 @@ class Writer():
             loss_values_list = getattr(self,title + '_loss_values') # total_train_loss_values
             loss_values_list.append(loss_value)
             
-            if set == 'train':
-                loss_values_list = loss_values_list[-self.running_mean_size:]
+#             if set == 'train':
+#                 loss_values_list = loss_values_list[-self.running_mean_size:]
             setattr(self,title + '_loss_values',loss_values_list) # total_train_loss_values
 
     def register_args(self,**kwargs):
@@ -177,6 +177,7 @@ class Writer():
                            {'is_active':False,'criterion':L1Loss(),'factor':1},
                       'spatial_difference':
                            {'is_active':False,'criterion':Spatial_Difference_Loss(**kwargs),'factor':self.spatial_loss_factor}}  #changed from L1Loss to MSELoss and changed to L1loss again
+        print(kwargs.get('task').lower())
         if 'reconstruction' in kwargs.get('task').lower():
             if kwargs.get('use_recon_loss'):
                 self.losses['reconstruction']['is_active'] = True

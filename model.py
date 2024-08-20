@@ -63,10 +63,8 @@ class Attention(nn.Module):
         return x
 
 class Classifier(nn.Module):
-    def __init__(self, in_features, out_features, norm_location='post', norm_type='batch', dropout=0.4):
-        super(LinearDropOutLayer, self).__init__()
-        self.norm_location = norm_location
-        self.norm_type = norm_type
+    def __init__(self, in_features, out_features, dropout=0.4):
+        super(Classifier, self).__init__()
         self.linear = nn.Linear(in_features, out_features)
         self.dropout = nn.Dropout(dropout)
         self.norm = nn.BatchNorm1d(out_features)
@@ -262,7 +260,7 @@ class Transformer_Finetune_Two_Channels(BaseModel):
         self.high_spatial_attention = Attention(dim=self.sequence_length, num_heads=num_heads)
         self.low_spatial_attention = Attention(dim=self.sequence_length, num_heads=num_heads)
         self.ultralow_spatial_attention = Attention(dim=self.sequence_length, num_heads=num_heads)
-        self.regression_head = Classifier(self.intermediate_vec, self.label_num, self.norm_location, self.norm_type)
+        self.regression_head = Classifier(self.intermediate_vec, self.label_num)
 
     def forward(self, x_l, x_u):        
         # 01 model
@@ -312,7 +310,7 @@ class Transformer_Finetune_Three_Channels(BaseModel):
             self.transformer = Transformer_Block(self.BertConfig, **kwargs).to(memory_format=torch.channels_last_3d)
         
         # classifier setting
-        self.regression_head = Classifier(self.intermediate_vec, self.label_num, self.norm_location, self.norm_type)
+        self.regression_head = Classifier(self.intermediate_vec, self.label_num)
             
     def forward(self, x_h, x_l, x_u):
         # input shape : (batch, seq_len, ROI)

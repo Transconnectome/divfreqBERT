@@ -249,9 +249,9 @@ if __name__ == '__main__':
     # load weights that you specified at the Argument
     model_weights_path, step, task = weight_loader(args)
 
-    if step == '3' :
+    if step == '4' :
         print(f'starting testing')
-        phase_num = '3'
+        phase_num = '4'
         test(args, phase_num, model_weights_path)
     else:
         print(f'starting phase{step}: {task}')

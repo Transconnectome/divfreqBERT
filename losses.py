@@ -29,7 +29,7 @@ class Spatial_Difference_Loss(nn.Module):
         super(Spatial_Difference_Loss, self).__init__()
         self.spat_diff_loss = 0.0
         self.spat_diff_loss_type = kwargs.get('spat_diff_loss_type')
-        self.fmri_multimodality_type = kwargs.get('fmri_multimodality_type')
+        self.fmri_dividing_type = kwargs.get('fmri_dividing_type')
     def forward(self, h, l, u):
         '''
         h, l, u is attention map
@@ -39,9 +39,9 @@ class Spatial_Difference_Loss(nn.Module):
         #loss = nn.MSELoss()
         if self.spat_diff_loss_type == 'minus_log':
             # current SOTA #
-            if self.fmri_multimodality_type == 'three_channels':
+            if self.fmri_dividing_type == 'three_channels':
                 self.spat_diff_loss = -torch.log((loss(h, l)+loss(h, u)+loss(l, u)))
-            elif self.fmri_multimodality_type == 'two_channels':
+            elif self.fmri_dividing_type == 'two_channels':
                 self.spat_diff_loss = -torch.log(loss(l, u))
         elif self.spat_diff_loss_type == 'reciprocal_log':
             self.spat_diff_loss = torch.tensor(1/(torch.log((loss(h, l)+loss(h, u)+loss(l, u)))))

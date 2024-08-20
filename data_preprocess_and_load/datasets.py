@@ -47,7 +47,7 @@ class BaseDataset(Dataset):
         self.feature_map_size = kwargs.get('feature_map_size')
         self.seq_len = kwargs.get('sequence_length')
         self.lorentzian = kwargs.get('divide_by_lorentzian')
-        self.fmri_dividing_type = kwargs.get('fmri_mdividing_type')
+        self.fmri_dividing_type = kwargs.get('fmri_dividing_type')
         self.feature_map_gen = kwargs.get('feature_map_gen')
         self.intermediate_vec = kwargs.get('intermediate_vec')
         self.shaefer_num_networks = kwargs.get('shaefer_num_networks')

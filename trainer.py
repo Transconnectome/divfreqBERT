@@ -54,7 +54,6 @@ class Trainer():
         self.recent_pth = None
         self.state_dict = None
         self.transfer_learning =  bool(self.pretrained_model_weights_path) or self.finetune
-        
         if self.fine_tune_task == 'regression':
             self.train_loader, self.val_loader, self.test_loader, self.mean, self.std = DataHandler(**kwargs).create_dataloaders()
         else:
@@ -175,16 +174,16 @@ class Trainer():
             if self.fmri_type in ['timeseries','frequency', 'time_domain_low', 'time_domain_ultralow', 'time_domain_high', 'frequency_domain_low', 'frequency_domain_ultralow']:
                 self.model = Transformer_Finetune(**self.kwargs)
             elif self.fmri_type == 'divided_timeseries':
-                if self.fmri_multimodality_type == 'three_channels':
+                if self.fmri_dividing_type == 'three_channels':
                     self.model = Transformer_Finetune_Three_Channels(**self.kwargs)
-                elif self.fmri_multimodality_type == 'two_channels':
+                elif self.fmri_dividing_type == 'two_channels':
                     self.model = Transformer_Finetune_Two_Channels(**self.kwargs)
 
         elif self.task.lower() == 'vanilla_bert':
             self.model = Transformer_Finetune(**self.kwargs)
 
         elif self.task.lower() == 'divfreqbert':
-            if self.fmri_multimodality_type == 'three_channels':
+            if self.fmri_dividing_type == 'three_channels':
                 self.model = Transformer_Finetune_Three_Channels(**self.kwargs)
          
         elif self.task.lower() == 'divfreqbert_reconstruction':
@@ -363,9 +362,9 @@ class Trainer():
             if self.fmri_type in ['timeseries', 'frequency', 'time_domain_high', 'time_domain_low', 'time_domain_ultralow', 'frequency_domain_low', 'frequency_domain_ultralow', 'frequency_domain_high']:
                 output_dict = self.model(input_dict['fmri_sequence'])
             elif self.fmri_type == 'divided_timeseries':
-                if self.fmri_multimodality_type == 'two_channels':
+                if self.fmri_dividing_type == 'two_channels':
                     output_dict = self.model(input_dict['fmri_lowfreq_sequence'], input_dict['fmri_ultralowfreq_sequence'])
-                elif self.fmri_multimodality_type == 'three_channels':
+                elif self.fmri_dividing_type == 'three_channels':
                     output_dict = self.model(input_dict['fmri_highfreq_sequence'], input_dict['fmri_lowfreq_sequence'], input_dict['fmri_ultralowfreq_sequence'])
   
         
@@ -374,9 +373,9 @@ class Trainer():
             if self.fmri_type in ['timeseries', 'frequency', 'time_domain_high', 'time_domain_low', 'time_domain_ultralow', 'frequency_domain_low', 'frequency_domain_ultralow', 'frequency_domain_high']:
                 output_dict = self.model(input_dict['fmri_sequence'])
             elif self.fmri_type == 'divided_timeseries':
-                if self.fmri_multimodality_type == 'two_channels':
+                if self.fmri_dividing_type == 'two_channels':
                     output_dict = self.model(input_dict['fmri_lowfreq_sequence'], input_dict['fmri_ultralowfreq_sequence'])
-                elif self.fmri_multimodality_type == 'three_channels':
+                elif self.fmri_dividing_type == 'three_channels':
                     output_dict = self.model(input_dict['fmri_highfreq_sequence'], input_dict['fmri_lowfreq_sequence'], input_dict['fmri_ultralowfreq_sequence'])
             
             
